@@ -297,12 +297,12 @@ def signal_gnerator(dataframe, short_price, long_price):
     # Plot the buy signals
     ax.plot(signals.loc[signals.Positions == 1.0].index,
              signals.Short_MA[signals.Positions == 1.0],
-             '^', markersize=10, color='g')
+             '^', markersize=7, color='g')
     
     # Plot the sell signals
     ax.plot(signals.loc[signals.Positions == -1.0].index, 
              signals.Long_MA[signals.Positions == -1.0],
-             'v', markersize=10, color='r')
+             'v', markersize=7, color='r')
     
     # Show the plot
     plt.show()

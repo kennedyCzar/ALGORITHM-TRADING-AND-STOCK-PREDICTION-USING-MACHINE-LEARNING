@@ -17,7 +17,9 @@ df = web.DataReader("IBM", "yahoo", "2000-01-01", "2018-07-16")
 
 def plot(file):
     import matplotlib.pyplot as plt
-    return file.plot()
+    file = file.plot()
+    plt.grid()
+    return file
     
 plot(df)
 
@@ -30,6 +32,7 @@ def plot_main(file):
     #file.set_index('Date', inplace = True)
     #file[['Low', 'Close']].plot(subplots = True, figsize = (18, 16))
     file[['Close']].plot()
+    plt.grid(True)
     plt.title('IBM yearly chart')
     plt.xlabel('year')
     plt.ylabel('closing price')
@@ -53,6 +56,7 @@ def bollinger_band(dataframe, average_price):
     dataframe['Upper band'] = dataframe['Close {} day MA'.format(average_price)] + 2*(dataframe['Close'].rolling(average_price).std())
     dataframe['Lower band'] = dataframe['Close {} day MA'.format(average_price)] - 2*(dataframe['Close'].rolling(average_price).std())
     dataframe[['Upper band', 'Lower band','Close', 'Close {} day MA'.format(average_price)]].plot()
+    plt.grid(True)
     plt.title('Bollinger band of {}'.format(average_price))
     plt.xlabel('year in view')
     plt.ylabel('Prices')
@@ -75,7 +79,7 @@ start, end = datetime.datetime(2010, 1, 1), datetime.datetime(2018, 7,1)
 tesla = web.DataReader('TSLA', 'yahoo', start, end)
 ford = web.DataReader('F', 'yahoo', start, end)
 gm = web.DataReader('GM', 'yahoo', start, end)
-
+dax = web.DataReader('DAX', 'yahoo', start, end)
 
 #data visualization
 #plot opening prices
@@ -169,7 +173,7 @@ def prediction(dataframe, ma1, ma2):
     predicted_price = pd.DataFrame(predicted_price, index = Y_test.index, columns = ['price'])
     predicted_price.plot(title = 'Predicted IBM closing price')
     Y_test.plot()
-    
+    plt.grid(True)
     plt.legend(['predicted_price', 'Actual Price'])
     #check the r-squared error
     r2_score = model_fit.score(X_test, Y_test)
@@ -267,6 +271,7 @@ def signal_gnerator(dataframe, short_price, long_price):
         long_price: longing moving window value for moving average(int)
     '''
     import matplotlib.pyplot as plt
+    import matplotlib.fin
 
     # Initialize the `signals` DataFrame with the `signal` column
     signals = pd.DataFrame(index=dataframe.index)
@@ -304,6 +309,8 @@ def signal_gnerator(dataframe, short_price, long_price):
              signals.Long_MA[signals.Positions == -1.0],
              'v', markersize=10, color='r')
     
+    #add a grid
+    plt.grid(True)
     # Show the plot
     plt.show()
 
