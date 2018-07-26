@@ -55,7 +55,7 @@ def bollinger_band(dataframe, average_price):
     dataframe['Close {} day MA'.format(average_price)] = dataframe['Close'].rolling(average_price).mean()
     dataframe['Upper band'] = dataframe['Close {} day MA'.format(average_price)] + 2*(dataframe['Close'].rolling(average_price).std())
     dataframe['Lower band'] = dataframe['Close {} day MA'.format(average_price)] - 2*(dataframe['Close'].rolling(average_price).std())
-    dataframe[['Upper band', 'Lower band','Close', 'Close {} day MA'.format(average_price)]].plot()
+    dataframe[['Close', 'Upper band', 'Lower band', 'Close {} day MA'.format(average_price)]].plot(lw = 1.)
     plt.grid(True)
     plt.title('Bollinger band of {}'.format(average_price))
     plt.xlabel('year in view')
@@ -103,7 +103,7 @@ ford['Volume'].max()
 #Out[142]: 480879500.0
 ford['Volume'].idxmax()
 #Out[141]: Timestamp('2011-01-28 00:00:00')
-
+print(ford.describe().transpose())
 
 #ford['Open'].plot(label = 'Ford')
 
@@ -153,6 +153,7 @@ def prediction(dataframe, ma1, ma2):
     
     from sklearn.model_selection import train_test_split
     from sklearn.linear_model import LinearRegression
+    from statsmodels.tsa.arima_model import ARIMA
     dataframe['MA{}'.format(ma1)] = dataframe['Close'].shift(1).rolling(ma1).mean()
     dataframe['MA{}'.format(ma2)] = df['Close'].shift(1).rolling(ma2).mean()
     X = dataframe[['MA{}'.format(ma1), 'MA{}'.format(ma2)]]
@@ -162,7 +163,8 @@ def prediction(dataframe, ma1, ma2):
     Y = Y['Close']
     #X[['MA3', 'MA9']].plot()
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.3, random_state = 0)
-
+    model = sm.tsa.statespace.SARIMAX(df[['MA{}'.format(ma1), 'MA{}'.format(ma2)]])
+    result = model.fit()
     model_fit = LinearRegression().fit(X_train, Y_train)
     print('IBM closing price =', model_fit.intercept_, '+',  round(model_fit.coef_[0], 2),
           '* 3day MA', '+', round(model_fit.coef_[1], 2),
@@ -181,16 +183,16 @@ def prediction(dataframe, ma1, ma2):
     #forecast = int(30)
     #create more time series for future prediction
     #X_test.plot()
-#    from pandas.tseries.offsets import DateOffset
-#    X_train['forecast'] = predicted_price
-#    future_dates = [X_train.index[-1] + DateOffset(months = x) for x in range(1, 30)]
-#    future_df = pd.DataFrame(index = future_dates, columns = X_train.columns)
-#    final_df = pd.concat([X_train, future_df])
-#    
-#    #forcast or prediction
-#    final_df['forecast'] = model_fit.predict(final_df)
-#    final_pred = model_fit.predict(final_df)
-#    final_df['forecast'].plot(title = 'Final forecast')
+    from pandas.tseries.offsets import DateOffset
+    X_train['forecast'] = predicted_price
+    future_dates = [X_train.index[-1] + DateOffset(months = x) for x in range(1, 30)]
+    future_df = pd.DataFrame(index = future_dates, columns = X_train.columns)
+    final_df = pd.concat([X_train, future_df])
+    
+    #forcast or prediction
+    final_df['forecast'] = model.predict(start = , end = , dynamic= True)
+    final_pred = model.predict(final_df)
+    final_df[['Close', 'forecast']].plot(title = 'Final forecast')
     
 prediction(tesla, 50, 120)
     
@@ -319,18 +321,63 @@ signal_gnerator(df, 50, 120)
 
 
 '''END'''
-#%% NEXT....
+#%%  Regression line
+
+import matplotlib.pyplot as plt
+
+#define data to use
+Xf = web.DataReader("IBM", "yahoo", "2000-01-01", "2018-07-16")
+
+#use Close price and volatility
+#Xf['Volatility'] = Xf['Close'] - Xf['Close'].shift(1)
+Xf = Xf.dropna()
+
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+
+#data preprocessing
+#Xf_wtclose = Xf.drop(['Close'], axis = 1)
+#scale_Xf = StandardScaler().fit(Xf_wtclose)
+#X_new = scale_Xf.transform(Xf_wtclose)
+
+#regression
+regress = LinearRegression()
+Xf_wtclose = Xf.drop(['Close'], axis = 1)
+regress.fit(Xf_wtclose[['Adj Close']], Xf['Close'])
+coeffs = regress.coef_
+intercept = regress.intercept_
+
+Xf['Regression'] = intercept + coeffs[0] * Xf['High'] + coeffs[1] * Xf['Low'] + coeffs[2] * Xf['Open'] + coeffs[3] * Xf['Volume'] + coeffs[4] * Xf['Adj Close']
+Xf['Prediction'] = intercept + regress.predict(Xf_wtclose[['Adj Close']])
+std_close = Xf['Close'].std()
+
+Xf['upper_regress'] = Xf['Regression'] - Xf['Regression'].std()
+Xf['lower_regress'] = Xf['Regression'] - Xf['Regression'].std()
+#plt.figure(figsize = (18, 15))
+ax = plt.subplot(111)
+Xf[['Close', 'Prediction']].plot()
+
+#----------------
+import statsmodels.api as sm
+from statsmodels.sandbox.regression.predstd import wls_prediction_std
+X = df.index.tolist()
+Y = df['Close'].tolist()
+X = np.reshape(X, (len(X), 1))
+Y = np.reshape(Y, (len(Y), 1))
+X = sm.add_constant(X)
+regress.fit(X, Y)
 
 
-
-
-
-
-
-
-
-
-
-
-
+model = sm.OLS(Y,X)
+result = model.fit()
+print(result.summary())
+prstd, lower, upper = wls_prediction_std(result)
+#Xf[['Close', prstd, lower, upper]].plot()
+prstd = pd.DataFrame(prstd, index = Xf.index, columns = ['prstd'])
+lower = pd.DataFrame(lower, index = Xf.index, columns = ['lower'])
+upper = pd.DataFrame(upper, index = Xf.index, columns = ['upper'])
+Xf['prstd'] = prstd
+Xf['lower'] = lower
+Xf['upper'] = upper
+Xf[['Close', 'prstd', 'lower', 'upper']].plot()
 
