@@ -359,20 +359,25 @@ Xf[['Close', 'Prediction']].plot()
 
 #----------------
 import statsmodels.api as sm
+from scipy import mstats
 from statsmodels.sandbox.regression.predstd import wls_prediction_std
-X = df.index.tolist()
-Y = df['Close'].tolist()
-X = np.reshape(X, (len(X), 1))
-Y = np.reshape(Y, (len(Y), 1))
+X, Y = df[['Adj Close']], df[['Close']]
 X = sm.add_constant(X)
-regress.fit(X, Y)
+slope, intercept, r_value, p_value, std_err = stats.linregress(X.iloc[:, 0], Y.iloc[:, 0])
+
+yhat = slope*X.iloc[:, 0] + intercept #this is the regression line
+
+Xf['Close'].plot()
+yhat.plot()
+
+
 
 
 model = sm.OLS(Y,X)
 result = model.fit()
 print(result.summary())
 prstd, lower, upper = wls_prediction_std(result)
-#Xf[['Close', prstd, lower, upper]].plot()
+Xf[['Close', prstd, lower, upper]].plot()
 prstd = pd.DataFrame(prstd, index = Xf.index, columns = ['prstd'])
 lower = pd.DataFrame(lower, index = Xf.index, columns = ['lower'])
 upper = pd.DataFrame(upper, index = Xf.index, columns = ['upper'])
