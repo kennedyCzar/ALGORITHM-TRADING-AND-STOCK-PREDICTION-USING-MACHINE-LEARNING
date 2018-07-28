@@ -7,9 +7,9 @@ This is Just a Sample work in progress.
 
 Stratrgy | Output
 --------------- | ---------------
-Bollinger band | Completed
-Moving Averages | Completed
-Regression | Completed
+Bollinger band | In progress
+Moving Averages | In progress
+Regression | In progress
 Neural Network | x
 Convoluted Neural Network | x
 
