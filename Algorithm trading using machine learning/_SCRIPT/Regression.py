@@ -5,7 +5,17 @@ Created on Sat Jul 28 02:15:15 2018
 @author: kennedy
 """
 
-class Regressioon():  
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime
+import pandas_datareader.data as web
+from datetime import datetime
+
+
+
+class Regression():  
     def __init__(self, dataframe, feature, start_date, end_date):
         
         '''
@@ -32,20 +42,16 @@ class Regressioon():
             if self.start_date == None and self.end_date == None:
                 raise('No data to plot regression')
             else:
-                self.regress()
+                self.dataframe = web.DataReader(self.dataframe, "yahoo", self.start_date, self.end_date)
         except ValueError:
             raise
         finally:
             pass
         
     def regress(self):
-        
-        #get data
-        self.dataframe = web.DataReader(dataframe, "yahoo", start_date, end_date)
-        
         #define the feature vector we would be using for 
         #to plot our regression
-        df = dataframe[[feature]]
+        df = self.dataframe[[self.feature]]
         
         #Its a dataframe so we have to convert
         #it into a numerical data
@@ -61,9 +67,9 @@ class Regressioon():
         
         #this we would be using to draw our regression line
         Xf1 = np.arange(1, len(df)+ 1)
-        Xf2 = (x1**2).astype(np.uint64)
-        Xf3 = (x1**3).astype(np.uint64)
-        Xf4 = (x1**4).astype(np.uint64)
+        Xf2 = (Xf1**2).astype(np.float64)
+        Xf3 = (Xf1**3).astype(np.float64)
+        Xf4 = (Xf1**4).astype(np.float64)
         
         #put our numpy array in a list
         Xf = [Xf1, Xf2, Xf3, Xf4]
@@ -73,7 +79,7 @@ class Regressioon():
         
         #create a regression class
         regress = LinearRegression(n_jobs = -1)
-        regress.fit(Xf, df[feature])
+        regress.fit(Xf, df[self.feature])
         
         #get the coefficients and intercept
         coeffs = regress.coef_
@@ -81,17 +87,29 @@ class Regressioon():
         
         #create a Regression and residual column
         #in out dataframe
-        df['Regression'] = intercept + coeffs[0] * x1 + coeffs[1] * x2 + coeffs[2] * x3 + coeffs[3] * x4 
+        df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2 + coeffs[2] * Xf3 + coeffs[3] * Xf4 
         df['Residuals'] = df[self.feature] - df['Regression']
         df['Upper regresss bound'] = df['Regression'] + df['Regression'].std()
         df['Lower regresss bound'] = df['Regression'] - df['Regression'].std()
         
         #plot 2D chart of result
-        df[[self.feature, 'Regression', 'Upper regresss bound', 'Lower regresss bound',]].plot(title = 'Polynomial Regression line for {}'.format(self.dataname))
+        df[[self.feature, 'Regression', 'Upper regresss bound', 'Lower regresss bound',]].plot(title = 'Polynomial Regression line for {}'.format(self.dataframe))
         plt.legend(loc = 'best')
         plt.grid(True)
         plt.show()
 
 
-c = Regressioon(dataframe = 'IBM', feature = 'Close', start_date = datetime(1976, 1, 1), end_date = datetime(2018, 7, 16))
-c.regress()
+
+
+
+
+if __name__ == '__main__':
+    #create an object of the regression class
+    c = Regression('IBM', 'Close', datetime(2000, 1, 1), datetime(2018, 7, 16))
+    #call the attribute of the Regression class
+    c.regress()
+
+
+
+
+
