@@ -67,14 +67,14 @@ class Regression():
         
         #this we would be using to draw our regression line
         Xf1 = np.arange(1, len(df)+ 1)
-        Xf2 = (Xf1**2).astype(np.float64)
-        Xf3 = (Xf1**3).astype(np.float64)
-        Xf4 = (Xf1**4).astype(np.float64)
+        #Xf2 = (Xf1**2).astype(np.float64)
+        #Xf3 = (Xf1**3).astype(np.float64)
+        #Xf4 = (Xf1**4).astype(np.float64)
         
         #put our numpy array in a list
-        Xf = [Xf1, Xf2, Xf3, Xf4]
+        Xf = [Xf1]#, Xf2, Xf3, Xf4]
         #transpose and reshape our data into (Nx4)Dimensions
-        Xf = np.reshape(Xf, (4, len(df))).T
+        Xf = np.reshape(Xf, (1, len(df))).T
         
         
         #create a regression class
@@ -87,7 +87,7 @@ class Regression():
         
         #create a Regression and residual column
         #in out dataframe
-        df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2 + coeffs[2] * Xf3 + coeffs[3] * Xf4 
+        df['Regression'] = intercept + coeffs[0] * Xf1# + coeffs[1] * Xf2 + coeffs[2] * Xf3 + coeffs[3] * Xf4 
         df['Residuals'] = df[self.feature] - df['Regression']
         df['Upper regresss bound'] = df['Regression'] + df['Regression'].std()
         df['Lower regresss bound'] = df['Regression'] - df['Regression'].std()
@@ -105,7 +105,7 @@ class Regression():
 
 if __name__ == '__main__':
     #create an object of the regression class
-    c = Regression('IBM', 'Close', datetime(2000, 1, 1), datetime(2018, 7, 16))
+    c = Regression('IBM', 'Close', datetime(2014, 1, 1), datetime(2018, 7, 16))
     #call the attribute of the Regression class
     c.regress()
 
