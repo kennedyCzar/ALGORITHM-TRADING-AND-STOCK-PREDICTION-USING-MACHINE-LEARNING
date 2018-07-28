@@ -12,8 +12,12 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import pandas_datareader.data as web
 import seaborn as snb
+from datetime import datetime
 
-df = web.DataReader("IBM", "yahoo", "2000-01-01", "2018-07-16")
+
+start_date = datetime(2000, 1, 1)
+end_date = datetime(2018, 7, 16)
+df = web.DataReader("IBM", "yahoo", start_date, end_date)
 
 def plot(file):
     import matplotlib.pyplot as plt
@@ -31,7 +35,7 @@ def plot_main(file):
     #file['Date'] = pd.to_datetime(file['Date'])
     #file.set_index('Date', inplace = True)
     #file[['Low', 'Close']].plot(subplots = True, figsize = (18, 16))
-    file[['Close']].plot()
+    file[['Close', 'Open', 'High', 'Low']].plot()
     plt.grid(True)
     plt.title('IBM yearly chart')
     plt.xlabel('year')
@@ -351,7 +355,7 @@ Xf['Regression'] = intercept + coeffs[0] * Xf['High'] + coeffs[1] * Xf['Low'] + 
 Xf['Prediction'] = intercept + regress.predict(Xf_wtclose[['Adj Close']])
 std_close = Xf['Close'].std()
 
-Xf['upper_regress'] = Xf['Regression'] - Xf['Regression'].std()
+Xf['upper_regress'] = Xf['Regression'] + Xf['Regression'].std()
 Xf['lower_regress'] = Xf['Regression'] - Xf['Regression'].std()
 #plt.figure(figsize = (18, 15))
 ax = plt.subplot(111)
@@ -361,13 +365,13 @@ Xf[['Close', 'Prediction']].plot()
 import statsmodels.api as sm
 from scipy import mstats
 from statsmodels.sandbox.regression.predstd import wls_prediction_std
-X, Y = df[['Adj Close']], df[['Close']]
+X, Y = df[['Open']], df[['Close']]
 X = sm.add_constant(X)
 slope, intercept, r_value, p_value, std_err = stats.linregress(X.iloc[:, 0], Y.iloc[:, 0])
 
 yhat = slope*X.iloc[:, 0] + intercept #this is the regression line
-
-Xf['Close'].plot()
+Xf['yhat'] = yhat
+Xf[['Close', 'yhat']].plot()
 yhat.plot()
 
 
@@ -385,4 +389,173 @@ Xf['prstd'] = prstd
 Xf['lower'] = lower
 Xf['upper'] = upper
 Xf[['Close', 'prstd', 'lower', 'upper']].plot()
+
+#%% REGRESSION LINE
+
+#import statsmodels.api as sm
+#import matplotlib.pyplot as plt
+#
+#
+#start_date = datetime(2000, 1, 1)
+#end_date = datetime(2018, 7, 16)
+#X = web.DataReader("IBM", "yahoo", start_date, end_date)
+#
+#X['day'] = X.index.map(lambda observation_timestamp: observation_timestamp.dayofyear)
+#Y = df.Close
+#Xf = X.day
+#Xf = sm.add_constant(Xf)
+#model = sm.OLS(Y, Xf).fit()
+#
+#X_prime = np.linspace(Xf.day.min(), Xf.day.max(), 100)
+#X_prime = sm.add_constant(X_prime)
+#yhat = model.predict(X_prime)
+#pd_yhat = pd.DataFrame(yhat, Xf[:100].index)
+#pd_xprime = pd.DataFrame(X_prime[:, 1], Xf[:100].index)
+#
+#
+#
+#plt.plot(Xf.day[:100], Y[:100])
+#plt.plot(pd_xprime, pd_yhat)
+#sm.stats.linear_rainbow(model)
+#sm.graphics.plot_regress_exog(model, "day")
+#sm.graphics.plot_fit(model, "day")
+#plt.scatter(X.day, Y)
+#plt.show()
+
+#%% REGRESSION ON ANY STOCK DATA
+
+import numpy as np 
+import pandas as pd
+import matplotlib.pyplot as plt 
+from datetime import datetime
+import pandas_datareader.data as web
+
+ 
+def Regression(dataframe, feature, start_date, end_date):
+    
+    '''
+    Arguments:
+        dataframe: dataframe we are loading
+        dataname: This is the required name of the company deta we want to perform
+                    regression
+        feature: It indicates the dependent variable we would be prediction
+        start_date: As implied signifies the start date of the stock we intend to predict
+        end_date:   As implied signifies the end date of the stock we intend to predict
+        
+    '''
+    
+    #Load data using datetime for the
+    #start and end date
+    #start_date = datetime(1976, 1, 1)
+    #end_date = datetime(2018, 7, 16)
+    try:
+        if start_date == None and end_date == None:
+            raise('No data to plot regression')
+        else:
+            data = web.DataReader(dataframe, "yahoo", start_date, end_date)
+    except ValueError:
+        raise
+    finally:
+        pass
+    
+    #define the feature vector we would be using for 
+    #to plot our regression
+    df = data[[feature]]
+    
+    #Its a dataframe so we have to convert
+    #it into a numerical data
+    #We also dont need this since the data is already in float
+    #df.info() to check datatype
+    #df['Open'] = pd.to_numeric(df['Open'], errors='coerce')
+    
+    df['Volatility'] = df[feature] - df[feature].shift(1)
+    df = df.dropna()
+    
+    #linear regression model
+    from sklearn.linear_model import LinearRegression
+    
+    #this we would be using to draw our regression line
+    Xf1 = np.arange(1, len(df)+ 1)
+    Xf2 = (Xf1**2).astype(np.float64)
+    Xf3 = (Xf1**3).astype(np.float64)
+    Xf4 = (Xf1**4).astype(np.float64)
+    
+    #put our numpy array in a list
+    Xf = [Xf1, Xf2, Xf3, Xf4]
+    #transpose and reshape our data into (Nx4)Dimensions
+    Xf = np.reshape(Xf, (4, len(df))).T
+    
+    
+    #create a regression class
+    regress = LinearRegression(n_jobs = -1)
+    regress.fit(Xf, df[feature])
+    
+    #get the coefficients and intercept
+    coeffs = regress.coef_
+    intercept = regress.intercept_
+    
+    #create a Regression and residual column
+    #in out dataframe
+    df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2 + coeffs[2] * Xf3 + coeffs[3] * Xf4
+    df['Residuals'] = df[feature] - df['Regression'] #Not needed now untill further analysis is required.
+    df['Upper regresss bound'] = df['Regression'] + df['Regression'].std()
+    df['Lower regresss bound'] = df['Regression'] - df['Regression'].std()
+    
+    
+    df[[feature, 'Regression', 'Upper regresss bound', 'Lower regresss bound',]].plot(title = 'Polynomial Regression line for {} from {} to {}'.format(dataframe, start_date, end_date))
+    plt.legend(loc = 'best')
+    plt.grid(True)
+    plt.show()
+
+
+#Unit testing
+Regression('TSLA', feature = 'Close', start_date = datetime(2016, 1, 1), end_date = datetime(2018, 7, 16))
+
+
+#Data
+#
+#tesla = web.DataReader('TSLA', 'yahoo', start, end)
+#ford = web.DataReader('F', 'yahoo', start, end)
+#gm = web.DataReader('GM', 'yahoo', start, end)
+#dax = web.DataReader('DAX', 'yahoo', start, end)
+#if __name__ == '__main__':
+#    try:
+#        if start_date == None and end_date == None:
+#            raise('No data to plot regression')
+#        else:
+#            call_class = regressioon_plot(dataframe, feature, start_date, end_date)
+#    except ValueError:
+#        raise
+#    finally:
+#        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
