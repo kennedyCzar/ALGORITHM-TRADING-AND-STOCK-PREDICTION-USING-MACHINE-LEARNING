@@ -424,7 +424,7 @@ Xf[['Close', 'prstd', 'lower', 'upper']].plot()
 
 #%% REGRESSION ON ANY STOCK DATA
 
-import numpy as np 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt 
 from datetime import datetime
@@ -477,13 +477,13 @@ def Regression(dataframe, feature, start_date, end_date):
     #this we would be using to draw our regression line
     Xf1 = np.arange(1, len(df)+ 1)
     Xf2 = (Xf1**2).astype(np.float64)
-    Xf3 = (Xf1**3).astype(np.float64)
-    Xf4 = (Xf1**4).astype(np.float64)
+    #Xf3 = (Xf1**3).astype(np.float64)
+    #Xf4 = (Xf1**4).astype(np.float64)
     
     #put our numpy array in a list
-    Xf = [Xf1, Xf2, Xf3, Xf4]
+    Xf = [Xf1, Xf2]#, Xf3, Xf4]
     #transpose and reshape our data into (Nx4)Dimensions
-    Xf = np.reshape(Xf, (4, len(df))).T
+    Xf = np.reshape(Xf, (2, len(df))).T
     
     
     #create a regression class
@@ -496,10 +496,10 @@ def Regression(dataframe, feature, start_date, end_date):
     
     #create a Regression and residual column
     #in out dataframe
-    df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2 + coeffs[2] * Xf3 + coeffs[3] * Xf4
+    df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2 #+ coeffs[2] * Xf3 + coeffs[3] * Xf4
     df['Residuals'] = df[feature] - df['Regression'] #Not needed now untill further analysis is required.
-    df['Upper regresss bound'] = df['Regression'] + df['Regression'].std()
-    df['Lower regresss bound'] = df['Regression'] - df['Regression'].std()
+    df['Upper regresss bound'] = df['Regression'] + (df['Regression'].std())
+    df['Lower regresss bound'] = df['Regression'] - (df['Regression'].std())
     
     
     df[[feature, 'Regression', 'Upper regresss bound', 'Lower regresss bound',]].plot(title = 'Polynomial Regression line for {} from {} to {}'.format(dataframe, start_date, end_date))
@@ -509,7 +509,7 @@ def Regression(dataframe, feature, start_date, end_date):
 
 
 #Unit testing
-Regression('TSLA', feature = 'Close', start_date = datetime(2016, 1, 1), end_date = datetime(2018, 7, 16))
+Regression('TSLA', 'Close', datetime(2010, 4, 1), datetime(2018, 7, 16))
 
 
 #Data
