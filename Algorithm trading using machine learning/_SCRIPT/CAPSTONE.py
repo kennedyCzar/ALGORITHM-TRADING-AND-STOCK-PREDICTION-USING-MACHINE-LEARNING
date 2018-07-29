@@ -608,33 +608,27 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     #plot future price
     #----------------------------------------------
     #new_end_date = datetime(2020, 7, 16)
-    dates = pd.date_range(start_date, new_end_date)
+    dates = pd.bdate_range(start_date, new_end_date)
     dt = np.arange(1, len(dates) + 1)
     dt2 = dt **2
     dt3 = dt **3
     #dt4 = dt **4
     
     dt_predict = intercept + coeffs[0] * dt + coeffs[1] * dt2 + coeffs[2] * dt3# + coeffs[3] * dt4
-    dt_predict = pd.DataFrame(data=dt_predict, index=dates)
-    #dt_predict.index.name = 'Date'
-    #dt_predict.columns = [[feature]]
-    df['predicted'] = dt_predict
-    df['Upper regresss bound'] = df['predicted'] + (df['Regression'].std())
-    df['Lower regresss bound'] = df['predicted'] - (df['Regression'].std())
-    df['Actual'] = data[[feature]]
-    df[['Actual', 'predicted', 'Upper regresss bound', 'Lower regresss bound']].plot(lw = 1.)
-    plt.grid(True)
-    plt.legend()
+    dt_predict = pd.DataFrame(data = dt_predict, index = dates)
+    dt_predict.index.name = 'Date'
+    dt_predict.columns = [[feature]]
+    actual = data['Open']
+    plt.figure(figsize=(18, 16))
+    plt.plot(actual, label="Actual")
+    plt.plot(dt_predict, label="Predicted")
+    plt.plot(dt_predict - std_regress, label='Upper regresss bound')
+    plt.plot(dt_predict + std_regress, label='lower regresss bound')
+    plt.legend(loc='best')
+    plt.title("Dont ask me")
+    plt.savefig("../_REGRESSION IMAGES/best_2018.png")
     plt.show()
     #----------------------------------------------------
-#    actual = df[[feature]]
-#    
-#    plt.plot(actual, label="Actual")
-#    plt.plot(dt_predict, label="Predicted")
-#    plt.plot(dt_predict - std_regress, label='Upper regresss bound')
-#    plt.plot(dt_predict + std_regress, label='Lower regresss bound')
-#    plt.legend(loc='best')
-#    plt.show()
 
 dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM']
 forecast('IBM', 'Close', datetime(1976, 1, 1), datetime(2018, 7, 16), datetime(2020, 7, 16))

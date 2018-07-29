@@ -76,12 +76,22 @@ dt3 = dt **3
 
 dt_predict = intercept + coeffs[0] * dt + coeffs[1] * dt2 + coeffs[2] * dt3# + coeffs[3] * dt4
 dt_predict = pd.DataFrame(data=dt_predict, index=dates)
+actual = data['Open']
+#df['predicted'] = dt_predict
+#df['Upper regresss bound'] = df['predicted'] + (df['Regression'].std())
+#df['Lower regresss bound'] = df['predicted'] - (df['Regression'].std())
+#df['Actual'] = df[['Open']]
+#df[['Actual', 'predicted', 'Upper regresss bound', 'Lower regresss bound']].plot(lw = 1., title = 'Say nothing')
+#plt.grid(True)
+#plt.legend()
+#plt.show()
 
-df['predicted'] = dt_predict
-df['Upper regresss bound'] = df['predicted'] + (df['Regression'].std())
-df['Lower regresss bound'] = df['predicted'] - (df['Regression'].std())
-df['Actual'] = df[['Open']]
-df[['Actual', 'predicted', 'Upper regresss bound', 'Lower regresss bound']].plot(lw = 1., title = 'Say nothing')
-plt.grid(True)
-plt.legend()
+plt.figure(figsize=(18, 16))
+plt.plot(actual, label="Actual")
+plt.plot(dt_predict, label="Predicted")
+plt.plot(dt_predict - std_regress, label='Predicted - std')
+plt.plot(dt_predict + std_regress, label='Predicted + std')
+plt.legend(loc='best')
+plt.title("Nasdaq 1971 - predicted 2019")
+plt.savefig("Nasdaq_Predictions_2018.png")
 plt.show()
