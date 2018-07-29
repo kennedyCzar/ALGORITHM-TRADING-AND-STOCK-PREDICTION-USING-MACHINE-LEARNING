@@ -542,6 +542,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     import matplotlib.pyplot as plt
     from datetime import datetime
     import pandas_datareader.data as web
+    from datetime import datetime
     
     #-----------------------------
     #start_date = datetime(1976, 1, 1)
@@ -620,7 +621,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     df['predicted'] = dt_predict
     df['Upper regresss bound'] = df['predicted'] + (df['Regression'].std())
     df['Lower regresss bound'] = df['predicted'] - (df['Regression'].std())
-    df['Actual'] = df[[feature]]
+    df['Actual'] = data[[feature]]
     df[['Actual', 'predicted', 'Upper regresss bound', 'Lower regresss bound']].plot(lw = 1.)
     plt.grid(True)
     plt.legend()
@@ -636,7 +637,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
 #    plt.show()
 
 dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM']
-forecast('IBM', 'Close', datetime(1976, 1, 1), datetime(2018, 7, 16), new_end_date = datetime(2020, 7, 16))
+forecast('IBM', 'Close', datetime(1976, 1, 1), datetime(2018, 7, 16), datetime(2020, 7, 16))
 
 
 

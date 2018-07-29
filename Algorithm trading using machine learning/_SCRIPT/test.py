@@ -61,8 +61,8 @@ df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2 + coeffs[2] * X
 df['Residuals'] = df['Open'] - df['Regression'] #Not needed now untill further analysis is required.
 std_regress = df['Regression'].std()
 std_open = df['Open'].std()
-df['Upper regresss bound'] = df['Regression'] + (df['Regression'].std())
-df['Lower regresss bound'] = df['Regression'] - (df['Regression'].std())
+#df['Upper regresss bound'] = df['Regression'] + (df['Regression'].std())
+#df['Lower regresss bound'] = df['Regression'] - (df['Regression'].std())
 
 
 #plot future price
@@ -76,7 +76,6 @@ dt3 = dt **3
 
 dt_predict = intercept + coeffs[0] * dt + coeffs[1] * dt2 + coeffs[2] * dt3# + coeffs[3] * dt4
 dt_predict = pd.DataFrame(data=dt_predict, index=dates)
-
 
 df['predicted'] = dt_predict
 df['Upper regresss bound'] = df['predicted'] + (df['Regression'].std())
