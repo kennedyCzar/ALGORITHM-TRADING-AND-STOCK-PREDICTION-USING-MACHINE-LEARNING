@@ -579,13 +579,13 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     #this we would be using to draw our regression line
     Xf1 = np.arange(1, len(df)+ 1)
     Xf2 = (Xf1**2).astype(np.float64)
-    Xf3 = (Xf1**3).astype(np.float64)
+    #Xf3 = (Xf1**3).astype(np.float64)
     #Xf4 = (Xf1**4).astype(np.float64)
     
     #put our numpy array in a list
-    Xf = [Xf1, Xf2, Xf3]#, Xf4]
+    Xf = [Xf1, Xf2]#, Xf3, Xf4]
     #transpose and reshape our data into (Nx4)Dimensions
-    Xf = np.reshape(Xf, (3, len(df))).T
+    Xf = np.reshape(Xf, (2, len(df))).T
     
     
     #create a regression class
@@ -598,7 +598,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     
     #create a Regression and residual column
     #in out dataframe
-    df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2 + coeffs[2] * Xf3# + coeffs[3] * Xf4
+    df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2# + coeffs[2] * Xf3 + coeffs[3] * Xf4
     df['Residuals'] = df[feature] - df['Regression'] #Not needed now untill further analysis is required.
     std_regress = df['Regression'].std()
     std_open = df[[feature]].std()
@@ -611,10 +611,10 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     dates = pd.bdate_range(start_date, new_end_date)
     dt = np.arange(1, len(dates) + 1)
     dt2 = dt **2
-    dt3 = dt **3
+    #dt3 = dt **3
     #dt4 = dt **4
     
-    dt_predict = intercept + coeffs[0] * dt + coeffs[1] * dt2 + coeffs[2] * dt3# + coeffs[3] * dt4
+    dt_predict = intercept + coeffs[0] * dt + coeffs[1] * dt2# + coeffs[2] * dt3 + coeffs[3] * dt4
     dt_predict = pd.DataFrame(data = dt_predict, index = dates)
     dt_predict.index.name = 'Date'
     dt_predict.columns = [[feature]]
@@ -631,7 +631,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     #----------------------------------------------------
 
 dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM']
-forecast('F', 'Close', datetime(1976, 1, 1), datetime(2018, 7, 16), datetime(2020, 7, 16))
+forecast("IBM", 'Close', datetime(1976, 1, 1), datetime(2018, 7, 16), datetime(2020, 7, 16))
 
 
 
