@@ -12,11 +12,11 @@ from datetime import datetime
 import pandas_datareader.data as web
 
 #
-start_date = datetime(1976, 1, 1)
+start_date = datetime(2012, 1, 1)
 end_date = datetime(2018, 7, 16)
 
 
-data = web.DataReader('IBM', "yahoo", start_date, end_date)
+data = web.DataReader('AAPL', "yahoo", start_date, end_date)
 
 
 #define the feature vector we would be using for 
@@ -92,6 +92,6 @@ plt.plot(dt_predict, label="Predicted")
 plt.plot(dt_predict - std_regress, label='Predicted - std')
 plt.plot(dt_predict + std_regress, label='Predicted + std')
 plt.legend(loc='best')
-plt.title("Nasdaq 1971 - predicted 2019")
-plt.savefig("Nasdaq_Predictions_2018.png")
+plt.title("Blah Blah Blah")
+plt.savefig("Predictions_2018.png")
 plt.show()
