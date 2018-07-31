@@ -273,11 +273,10 @@ def signal_gnerator(dataframe, short_price, long_price):
     Arguments:
         
         dataframe: Dataset to be used for signal generation
-        short_price: shorting moving window value for moving average(int)
-        long_price: longing moving window value for moving average(int)
+        short_price: shorting moving window value for moving average(int) short_price = 70
+        long_price: longing moving window value for moving average(int) long_price = 250
     '''
     import matplotlib.pyplot as plt
-    import matplotlib.fin
 
     # Initialize the `signals` DataFrame with the `signal` column
     signals = pd.DataFrame(index=dataframe.index)
@@ -321,7 +320,7 @@ def signal_gnerator(dataframe, short_price, long_price):
     plt.show()
 
 
-signal_gnerator(df, 50, 120)
+signal_gnerator(df, 70, 250)
 
 
 '''END'''
