@@ -111,7 +111,7 @@ class Regression():
 
 if __name__ == '__main__':
     #create an object of the regression class | Unit testing
-    c = Regression('GM', 'Open', datetime(1976, 1, 1), datetime(2018, 7, 16))
+    c = Regression('AAPL', 'Open', datetime(1976, 1, 1), datetime.now())
     #call the attribute of the Regression class
     c.regress()
 
