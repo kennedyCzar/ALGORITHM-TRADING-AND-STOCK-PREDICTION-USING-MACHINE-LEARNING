@@ -40,9 +40,9 @@ def signal_gnerator(stock_name, short_price, long_price, start_date, end_date):
     signals['Signal'] = 0.0
 
     # Create short simple moving average over the short window
-    signals['Short_MA'] = dataframe['Close'].rolling(window = short_price, min_periods=1, center=False).mean()
+    signals['Long_MA'] = dataframe['Close'].rolling(window = short_price, min_periods=1, center=False).mean()
     # Create long simple moving average over the long window
-    signals['Long_MA'] = dataframe['Close'].rolling(window = long_price, min_periods=1, center=False).mean()
+    signals['Short_MA'] = dataframe['Close'].rolling(window = long_price, min_periods=1, center=False).mean()
 
     # Create signals
     signals['Signal'][short_price:] = np.where(signals['Short_MA'][short_price:] > signals['Long_MA'][short_price:], 1.0, 0.0)   
@@ -63,13 +63,13 @@ def signal_gnerator(stock_name, short_price, long_price, start_date, end_date):
     
     dataframe['Volatility'].plot()
     # Plot the buy signals
-    ax.plot(signals.loc[signals.Positions == 1.0].index,
-             signals.Short_MA[signals.Positions == 1.0],
+    ax.plot(signals.loc[signals.Positions == -1.0].index,
+             signals.Long_MA[signals.Positions == -1.0],
              '^', markersize=6, color='g')
     
     # Plot the sell signals
-    ax.plot(signals.loc[signals.Positions == -1.0].index, 
-             signals.Long_MA[signals.Positions == -1.0],
+    ax.plot(signals.loc[signals.Positions == 1.0].index, 
+             signals.Short_MA[signals.Positions == 1.0],
              'v', markersize=6, color='r')
     
     #add a grid
@@ -79,4 +79,4 @@ def signal_gnerator(stock_name, short_price, long_price, start_date, end_date):
     plt.show()
 
 
-signal_gnerator('F', 70, 250, datetime(2000, 1, 1), datetime.now())
+signal_gnerator('MSFT', 70, 250, datetime(2000, 1, 1), datetime.now())

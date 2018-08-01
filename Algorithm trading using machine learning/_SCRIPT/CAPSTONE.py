@@ -624,7 +624,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     plt.plot(dt_predict - std_regress, label='Upper regresss bound')
     plt.plot(dt_predict + std_regress, label='lower regresss bound')
     plt.legend(loc='best')
-    plt.title("Dont ask me")
+    plt.title("{} REGRESSION PLOT".format(dataframe))
     plt.savefig("../_REGRESSION IMAGES/best_2018.png")
     plt.show()
     #----------------------------------------------------
