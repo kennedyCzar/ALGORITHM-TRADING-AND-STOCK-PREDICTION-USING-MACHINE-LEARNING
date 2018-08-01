@@ -630,7 +630,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     #----------------------------------------------------
 
 dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM']
-forecast("AAPL", 'Close', datetime(2012, 1, 1), datetime(2018, 7, 16), datetime(2020, 7, 16))
+forecast("TSLA", 'Close', datetime(2012, 1, 1), datetime(2018, 7, 16), datetime(2020, 7, 16))
 
 
 

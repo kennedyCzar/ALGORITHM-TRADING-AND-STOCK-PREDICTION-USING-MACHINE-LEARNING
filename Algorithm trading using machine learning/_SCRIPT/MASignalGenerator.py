@@ -49,7 +49,7 @@ def signal_gnerator(stock_name, short_price, long_price, start_date, end_date):
 
     # Generate trading orders
     signals['Positions'] = signals['Signal'].diff()
-
+    
     # Initialize the plot figure
     fig = plt.figure()
     
@@ -62,6 +62,7 @@ def signal_gnerator(stock_name, short_price, long_price, start_date, end_date):
     signals[['Short_MA', 'Long_MA']].plot(ax = ax, lw = 1.)
     
     dataframe['Volatility'].plot()
+
     # Plot the buy signals
     ax.plot(signals.loc[signals.Positions == -1.0].index,
              signals.Long_MA[signals.Positions == -1.0],
@@ -79,4 +80,4 @@ def signal_gnerator(stock_name, short_price, long_price, start_date, end_date):
     plt.show()
 
 
-signal_gnerator('MSFT', 70, 250, datetime(2000, 1, 1), datetime.now())
+signal_gnerator('GM', 70, 250, datetime(2000, 1, 1), datetime.now())

@@ -17,11 +17,11 @@ import matplotlib.pyplot as plt
 
 
 #def bollinger_band(data, average_price):
-start_date = datetime(1987, 1, 1)
+start_date = datetime(2012, 1, 1)
 #end_date = datetime(2018, 7, 16)
 end_date = datetime.now()
 
-data = web.DataReader('AAPL', "yahoo", start_date, end_date)
+data = web.DataReader('TSLA', "yahoo", start_date, end_date)
 average_price = 50
 
 data['Close {} day MA'.format(average_price)] = data['Close'].rolling(average_price).mean()
