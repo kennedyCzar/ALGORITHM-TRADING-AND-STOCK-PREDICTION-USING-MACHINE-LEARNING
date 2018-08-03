@@ -95,3 +95,37 @@ plt.legend(loc='best')
 plt.title("Blah Blah Blah")
 plt.savefig("Predictions_2018.png")
 plt.show()
+
+#%%
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime
+import pandas_datareader.data as web
+
+#
+start_date = datetime(2012, 1, 1)
+end_date = datetime(2018, 7, 16)
+
+
+data = web.DataReader('TSLA', "yahoo", start_date, end_date)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

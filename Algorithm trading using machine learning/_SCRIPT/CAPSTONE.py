@@ -582,9 +582,9 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     #Xf4 = (Xf1**4).astype(np.float64)
     
     #put our numpy array in a list
-    Xf = [Xf1, Xf2]#, Xf3, Xf4]
+    Xf = [Xf1, Xf2, Xf3]#, Xf4]
     #transpose and reshape our data into (Nx4)Dimensions
-    Xf = np.reshape(Xf, (2, len(df))).T
+    Xf = np.reshape(Xf, (3, len(df))).T
     
     
     #create a regression class
@@ -597,7 +597,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     
     #create a Regression and residual column
     #in out dataframe
-    df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2# + coeffs[2] * Xf3 + coeffs[3] * Xf4
+    df['Regression'] = intercept + coeffs[0] * Xf1 + coeffs[1] * Xf2 + coeffs[2] * Xf3# + coeffs[3] * Xf4
     df['Residuals'] = df[feature] - df['Regression'] #Not needed now untill further analysis is required.
     std_regress = df['Regression'].std()
     std_open = df[[feature]].std()
@@ -624,13 +624,14 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     plt.plot(dt_predict - std_regress, label='Upper regresss bound')
     plt.plot(dt_predict + std_regress, label='lower regresss bound')
     plt.legend(loc='best')
-    plt.title("{} REGRESSION PLOT".format(dataframe))
-    plt.savefig("../_REGRESSION IMAGES/best_2018.png")
+    plt.title("{} REGRESSION FORECAST FOR {}".format(dataframe, new_end_date))
+    #plt.savefig("../_REGRESSION IMAGES/best_2018.png")
     plt.show()
     #----------------------------------------------------
 
 dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM']
-forecast("TSLA", 'Close', datetime(2012, 1, 1), datetime(2018, 7, 16), datetime(2020, 7, 16))
+#end_date = datetime(2018, 7, 16)
+forecast("TSLA", 'Close', datetime(2012, 1, 1), datetime.now(), datetime(2020, 7, 16))
 
 
 
