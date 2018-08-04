@@ -15,7 +15,7 @@ from datetime import datetime
 
 
 
-class Regression():  
+class Regression(object):  
     def __init__(self, dataframe, feature, start_date, end_date):
         
         '''
@@ -47,7 +47,7 @@ class Regression():
             else:
                 self.data = web.DataReader(self.dataframe, "yahoo", self.start_date, self.end_date)
         except ValueError:
-            raise
+            raise('Insuffient data or error fetching data')
         finally:
             pass
         
@@ -105,15 +105,13 @@ class Regression():
         plt.show()
 
 
-
-
-
-
 if __name__ == '__main__':
     #create an object of the regression class | Unit testing
-    c = Regression('AAPL', 'Open', datetime(1976, 1, 1), datetime.now())
-    #call the attribute of the Regression class
-    c.regress()
+    dataframe = ['GM', 'TSLA', 'AAPL', 'MSFT']
+    for data in dataframe:
+        c = Regression(data, 'Close', datetime(1976, 1, 1), datetime.now())
+        #call the attribute of the Regression class
+        c.regress()
 
 
 
