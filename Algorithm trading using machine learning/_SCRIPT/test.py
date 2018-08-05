@@ -109,7 +109,7 @@ start_date = datetime(2012, 1, 1)
 end_date = datetime(2018, 7, 16)
 
 
-data = web.DataReader('TSLA', "yahoo", start_date, end_date)
+data = web.DataReader('GM', "yahoo", start_date, end_date)
 
 
 
