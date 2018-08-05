@@ -13,9 +13,9 @@ Regression | In progress
 Neural Network | x
 Convoluted Neural Network | x
 
-'''
+```
 Prediction output for the modules in the script
-'''
+```
 
 Second order Regression plot
 
