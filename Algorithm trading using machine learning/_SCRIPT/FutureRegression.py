@@ -105,4 +105,4 @@ if __name__ == '__main__':
     #end_date = datetime(2018, 7, 16)
     for ii in dataframe:
         forecast(ii, 'Close', datetime(2012, 1, 1), datetime.now(), datetime(2020, 7, 16))
-        plt.savefig("../_REGRESSION IMAGES/best{}_2018.png".format(ii))
+        plt.savefig("../_REGRESSION FUTURE FORECAST/best{}_2018.png".format(ii))
