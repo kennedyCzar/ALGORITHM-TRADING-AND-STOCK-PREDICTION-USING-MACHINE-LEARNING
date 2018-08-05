@@ -42,8 +42,7 @@ class forecast(object):
         
     
         
-        df['Volatility'] = df[self.feature] - df[self.feature].shift(1)
-        df = df.dropna()
+        df['Volatility'] = df[self.feature] - df[self.feature].shift(1).fillna(0)
         
         #linear regression model
         from sklearn.linear_model import LinearRegression
@@ -95,6 +94,7 @@ class forecast(object):
         plt.plot(dt_predict - std_regress, label='Upper regresss bound')
         plt.plot(dt_predict + std_regress, label='lower regresss bound')
         plt.legend(loc='best')
+        plt.grid(True)
         plt.title("{} REGRESSION FORECAST FOR {}".format(dataframe, new_end_date))
         #plt.savefig("../_REGRESSION IMAGES/best_2018.png")
         plt.show()
