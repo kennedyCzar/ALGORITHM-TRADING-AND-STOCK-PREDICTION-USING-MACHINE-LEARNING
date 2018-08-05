@@ -578,7 +578,7 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
     #this we would be using to draw our regression line
     Xf1 = np.arange(1, len(df)+ 1)
     Xf2 = (Xf1**2).astype(np.float64)
-    #Xf3 = (Xf1**3).astype(np.float64)
+    Xf3 = (Xf1**3).astype(np.float64)
     #Xf4 = (Xf1**4).astype(np.float64)
     
     #put our numpy array in a list
@@ -631,7 +631,8 @@ def forecast(dataframe, feature, start_date, end_date, new_end_date):
 
 dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM']
 #end_date = datetime(2018, 7, 16)
-forecast("TSLA", 'Close', datetime(2012, 1, 1), datetime.now(), datetime(2020, 7, 16))
+for data in dataframe:
+    forecast(data, 'Close', datetime(2012, 1, 1), datetime.now(), datetime(2020, 7, 16))
 
 
 
