@@ -7,10 +7,10 @@ This is Just a Sample work in progress.
 
 |Stratrgy        | Output        |
 |--------------- | --------------|
-|Bollinger band | In progress    |
+|Bollinger band  | In progress   |
 |Moving Averages | In progress   |
-|Regression | In progress        |
-|Neural Network | x              |
+|Regression      | In progress   |
+|Neural Network  | x             |
 |Convoluted Neural Network | x   |
 
 ```
