@@ -31,7 +31,6 @@ data['Volatility'] = (data['Close'] - data['Close'].shift(1)).fillna(0)
 #BOLLINGER SIGNAL GENERATOR
 
 
-
 #plot chart
 data[['Close', 'Upper band', 'Lower band', 'Close {} day MA'.format(average_price), 'Volatility']].plot(lw = 1.)
 plt.grid(True)
