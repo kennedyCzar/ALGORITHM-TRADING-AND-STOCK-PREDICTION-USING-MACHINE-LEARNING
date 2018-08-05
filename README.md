@@ -13,7 +13,7 @@ This is Just a Sample work in progress.
 |Neural Network  | x             |
 |Convoluted Neural Network | x   |
 
-```
+```bash
 Prediction output for the modules in the script
 ```
 
