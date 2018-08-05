@@ -65,8 +65,7 @@ class Regression(object):
         #df.info() to check datatype
         #df['Open'] = pd.to_numeric(df['Open'], errors='coerce')
         
-        df['Volatility'] = df[self.feature] - df[self.feature].shift(1)
-        df = df.dropna()
+        df['Volatility'] = df[self.feature] - df[self.feature].shift(1).fillna(0)
         
         #linear regression model
         from sklearn.linear_model import LinearRegression
