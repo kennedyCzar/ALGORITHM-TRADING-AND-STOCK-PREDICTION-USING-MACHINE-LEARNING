@@ -57,11 +57,20 @@ class forecast(object):
         Xf = [Xf1, Xf2, Xf3]#, Xf4]
         #transpose and reshape our data into (Nx4)Dimensions
         Xf = np.reshape(Xf, (3, len(df))).T
+        Yf = df[self.feature]
         
-        
-        #create a regression class
-        regress = LinearRegression(n_jobs = -1)
-        regress.fit(Xf, df[feature])
+        ##KFold cross validation
+        k_fold = KFold(n_splits = 3, random_state=None, shuffle=False)
+        for train, test in k_fold.split(Xf):
+            X_train, X_test = Xf[train], Xf[test]
+            Y_train, Y_test = Yf[train], Yf[test]
+            #create a regression class
+            regress = LinearRegression(n_jobs = -1)
+            #fit regression line
+            #regress.fit(X_train, Y_train)
+            regress.fit(Xf, Yf)
+        print('Test Score:{}'.format(regress.score(X_test, Y_test)))
+        print(zip(Xf, regress.coef_))
         
         #get the coefficients and intercept
         coeffs = regress.coef_
@@ -90,7 +99,7 @@ class forecast(object):
         actual = data['Open']
         plt.figure(figsize=(18, 16))
         plt.plot(actual, label="Actual")
-        plt.plot(dt_predict, label="Predicted")
+        plt.plot(dt_predict, label="Predicted", lw = 1.)
         plt.plot(dt_predict - std_regress, label='Upper regresss bound')
         plt.plot(dt_predict + std_regress, label='lower regresss bound')
         plt.legend(loc='best')
