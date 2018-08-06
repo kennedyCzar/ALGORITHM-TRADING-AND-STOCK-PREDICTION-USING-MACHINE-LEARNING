@@ -87,4 +87,4 @@ def signal_gnerator(stock_name, short_price, long_price, start_date, end_date):
     plt.show()
 
 
-signal_gnerator('GM', 70, 250, datetime(2000, 1, 1), datetime.now())
+signal_gnerator('MSFT', 70, 250, datetime(2000, 1, 1), datetime.now())

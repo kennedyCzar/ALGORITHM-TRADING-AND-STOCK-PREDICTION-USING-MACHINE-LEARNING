@@ -30,7 +30,6 @@ def signal_gnerator(stock_name, short_price, long_price, start_date, end_date):
         long_price: longing moving window value for moving average(int) long_price = 250
     '''
     import matplotlib.pyplot as plt
-    
     #load data
     dataframe = web.DataReader(stock_name, "yahoo", start_date, end_date)
     #get volatility
