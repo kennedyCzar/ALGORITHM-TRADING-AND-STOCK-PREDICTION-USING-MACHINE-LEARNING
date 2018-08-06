@@ -5,7 +5,7 @@ ALGORITHM TRADING AND STOCK PREDICTION USING MACHINE LEARNING
 [![](https://img.shields.io/badge/python-100%25-orange.svg)]
 Applying Machine Learning in Stock Prediction.
 
-This is Just a Sample work in progress. https://img.shields.io/badge/python-100%25-green.svg
+This is Just a Sample work in progress.
 
 |Stratrgy        | Output        |
 |--------------- | --------------|
