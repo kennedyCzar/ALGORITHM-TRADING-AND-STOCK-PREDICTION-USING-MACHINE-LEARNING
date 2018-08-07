@@ -12,11 +12,11 @@ from datetime import datetime
 import pandas_datareader.data as web
 from sklearn.model_selection import KFold, GridSearchCV
 #
-start_date = datetime(2012, 1, 1)
+start_date = datetime(2016, 1, 1)
 end_date = datetime(2018, 7, 16)
 
 
-data = web.DataReader('F', "yahoo", start_date, end_date)
+data = web.DataReader('IBM', "yahoo", start_date, end_date)
 
 
 #define the feature vector we would be using for 
@@ -35,7 +35,7 @@ Xf1 = np.arange(1, len(df)+ 1)
 #Xf4 = (Xf1**4).astype(np.float64)
 
 #put our numpy array in a list
-Xf = [Xf1]#, Xf2, Xf3#, Xf4]
+Xf = [Xf1]#, Xf2]#, Xf3#, Xf4]
 #transpose and reshape our data into (Nx4)Dimensions
 Xf = np.reshape(Xf, (1, len(df))).T
 Yf = df['Open']
@@ -45,7 +45,7 @@ Yf = df['Open']
 #    X_train, X_test = Xf[train], Xf[test]
 #    Y_train, Y_test = Yf[train], Yf[test]
     #create a regression class
-svect_ = SVR(kernel = 'linear')
+svect_ = SVR(kernel = 'linear', max_iter = 3)
 svect_.fit(Xf, Yf)
     #fit grid_
 #print('best_estimator_{}'.format(gridSearch_.best_estimator_))
@@ -59,7 +59,7 @@ intercept = svect_.intercept_
 
 #create a Regression and residual column
 #in out dataframe
-df['Regression'] = intercept + coeffs[0][0] * Xf1# + coeffs[1][1] * Xf2# + coeffs[2] * Xf3 + coeffs[3] * Xf4
+df['Regression'] = intercept + coeffs[0][0] * Xf1# + coeffs[0][1] * Xf2# + coeffs[2] * Xf3 + coeffs[3] * Xf4
 df['Residuals'] = df['Open'] - df['Regression'] #Not needed now untill further analysis is required.
 std_regress = df['Regression'].std()
 std_open = df['Open'].std()
@@ -72,11 +72,11 @@ std_open = df['Open'].std()
 end_date1 = datetime(2020, 7, 16)
 dates = pd.bdate_range(start_date, end_date1)
 dt = np.arange(1, len(dates) + 1)
-#dt2 = dt **2
+dt2 = dt **2
 #dt3 = dt **3
 #dt4 = dt **4
 
-dt_predict = intercept + coeffs[0][0] * dt# + coeffs[1] * dt2# + coeffs[2] * dt3 + coeffs[3] * dt4
+dt_predict = intercept + coeffs[0][0] * dt# + coeffs[0][1] * dt2# + coeffs[2] * dt3 + coeffs[3] * dt4
 dt_predict = pd.DataFrame(data=dt_predict, index=dates)
 actual = data['Open']
 
