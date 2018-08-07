@@ -12,7 +12,7 @@ This is Just a Sample work in progress.
 |Bollinger band  | In progress   |
 |Moving Averages | In progress   |
 |Regression      | In progress   |
-|SVM      | In progress          |
+|SVM             | In progress   |
 |Neural Network  | x             |
 |Convoluted Neural Network | x   |
 
