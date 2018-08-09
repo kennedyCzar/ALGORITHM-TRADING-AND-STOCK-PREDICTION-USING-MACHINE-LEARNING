@@ -16,18 +16,19 @@ from sklearn import preprocessing, cross_validation, svm
 from sklearn.linear_model import LinearRegression
 import math
 #
-start_date = datetime(2000, 1, 1)
+start_date = datetime(1987, 1, 1)
 end_date = datetime.now()
 
 
 data = web.DataReader('IBM', "yahoo", start_date, end_date)
+
 forecast_col = 'Close'
-forecast_out = int(math.ceil(0.01 * len(data)))
+forecast_out = int(math.ceil(0.02 * len(data)))
 data['label'] = data[forecast_col].shift(-forecast_out)
 X = data.iloc[:, :5]
 X = preprocessing.scale(X)
-Xf = X[:forecast_out]
-X = X[forecast_out:]
+Xf = X[-forecast_out:]
+X = X[:-forecast_out]
 data.dropna(inplace=True)
 Y = np.array(data['label'])
 X_train, X_test, Y_train, Y_test = cross_validation.train_test_split(X, Y, test_size=0.3, random_state = 0)
@@ -38,18 +39,16 @@ score = clf.score(X_test, Y_test)
 fX_set = clf.predict(Xf)
 data['Forecast'] = np.nan
 last_date = data.index[-1]
-last_date = datetime.strptime(str(last_date), '%Y-%m-%d 00:00:00').timestamp()
-last_unix = last_date
+#last_date = datetime.strptime(str(last_date), '%Y-%m-%d 00:00:00').timestamp()
+last_unix = last_date.timestamp()
 one_day = 86400
-next_unix = last_unix + one_day
 next_unix = last_unix + one_day
 
 for i in fX_set:
     next_date = datetime.fromtimestamp(next_unix)
-    next_unix += 86400
+    next_unix += one_day
     data.loc[next_date] = [np.nan for _ in range(len(data.columns)-1)]+[i]
 data[['Close', 'Forecast']].plot()
-#plt.legend(loc=4)
 plt.xlabel('Date')
 plt.ylabel('Price')
 plt.show()
