@@ -39,8 +39,7 @@ score = clf.score(X_test, Y_test)
 fX_set = clf.predict(Xf)
 data['Forecast'] = np.nan
 last_date = data.index[-1]
-#last_date = datetime.strptime(str(last_date), '%Y-%m-%d 00:00:00').timestamp()
-last_unix = last_date.timestamp()
+last_unix = last_date = datetime.strptime(str(last_date), '%Y-%m-%d 00:00:00').timestamp()
 one_day = 86400
 next_unix = last_unix + one_day
 
