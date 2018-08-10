@@ -2,7 +2,7 @@
 ALGORITHM TRADING AND STOCK PREDICTION USING MACHINE LEARNING
 [![Git hosted on](https://img.shields.io/badge/Hosted%20On-Git-brightgreen.svg?style=flat)](https://kennedyczar.github.io/ALGORITHM-TRADING-AND-STOCK-PREDICTION-USING-MACHINE-LEARNING/) ![](https://img.shields.io/badge/python-100%25-green.svg)
 
-![](https://img.shields.io/badge/python-3.6-orange.svg)
+![](https://img.shields.io/badge/python-v3.6-orange.svg)
 Applying Machine Learning in Stock Prediction.
 
 This is Just a Sample work in progress.
