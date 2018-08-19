@@ -69,9 +69,12 @@ class FBForecaster(object):
 
 #%% UNIT TEST
 
-fb = FBForecaster('F', 'Close', datetime(2000, 1, 1), datetime.now(), 365)
-fb.forecast()
-
+dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM', 'GOLD', 'FB']
+    #end_date = datetime(2018, 7, 16)
+for ii in dataframe:
+    fb = FBForecaster(ii, 'Close', datetime(2000, 1, 1), datetime.now(), 365)
+    fb.forecast()
+    plt.savefig("../FBPROPHET_IMAGES/FBProphetResult_For_{}_2018.png".format(ii))
 
 
 
