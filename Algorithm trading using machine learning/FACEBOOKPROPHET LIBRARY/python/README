@@ -26,16 +26,17 @@ Other forecasting packages
 Installation
 ------------
 
-::
+Check the script folder to see how to install.
+Otherwise you can pip install.
+Remember the essence of installing from the folder is so that 
+any changes made from the facebook scripts would directly affect our 
+output.
 
-  $ pip install fbprophet
-
-
-Note:  Installation requires PyStan, which has its `own installation instructions <http://pystan.readthedocs.io/en/latest/installation_beginner.html>`_.  On Windows, PyStan requires a compiler so you'll need to `follow the instructions<http://pystan.readthedocs.io/en/latest/windows.html>`_.  The key step is installing a recent `C++ compiler <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_.
 
 Example usage
 -------------
 
+Usage is quite direct
 ::
 
   >>> from fbprophet import Prophet
