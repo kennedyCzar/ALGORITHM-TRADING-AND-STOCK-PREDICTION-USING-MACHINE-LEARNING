@@ -636,7 +636,29 @@ for data in dataframe:
 
 
 
+#%%TESTING FACEBOOK PROPHET
 
+
+
+start_date = datetime(2000, 1, 1)
+end_date = datetime.now()
+data = web.DataReader("AAPL", "yahoo", start_date, end_date)
+
+
+dT = pd.DataFrame(data.index)
+close = pd.DataFrame(np.array(data.loc[:, ['Close']]), columns = ['y'])
+
+df = pd.concat([dT, close], axis = 1)
+df.columns = ['ds', 'y']
+
+#instantiate the prophet model
+model = Prophet()
+model.fit(df)
+future = model.make_future_dataframe(periods=365)
+forecast = model.predict(future)
+forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
+
+model.plot(forecast)
 
 
 
