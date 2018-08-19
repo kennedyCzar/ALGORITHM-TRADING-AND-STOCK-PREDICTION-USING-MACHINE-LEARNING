@@ -9,33 +9,34 @@ Full documentation and examples available at the homepage: https://facebook.gith
 
 Important links
 ---------------
-
+```
 - HTML documentation: https://facebook.github.io/prophet/docs/quick_start.html
 - Issue tracker: https://github.com/facebook/prophet/issues
 - Source code repository: https://github.com/facebook/prophet
 - Implementation of Prophet in R: https://cran.r-project.org/package=prophet
-
+```
 
 Other forecasting packages
 --------------------------
-
+```
 - Rob Hyndman's `forecast package <http://robjhyndman.com/software/forecast/>`_
 - `Statsmodels <http://statsmodels.sourceforge.net/>`_
-
+```
 
 Installation
 ------------
-
-::
-
-  $ pip install fbprophet
-
-
-Note:  Installation requires PyStan, which has its `own installation instructions <http://pystan.readthedocs.io/en/latest/installation_beginner.html>`_.  On Windows, PyStan requires a compiler so you'll need to `follow the instructions<http://pystan.readthedocs.io/en/latest/windows.html>`_.  The key step is installing a recent `C++ compiler <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_.
+```
+Check the script folder to see how to install.
+Otherwise you can pip install.
+Remember the essence of installing from the folder is so that 
+any changes made from the facebook scripts would directly affect our 
+output.
+```
 
 Example usage
 -------------
-
+```
+Usage is quite direct
 ::
 
   >>> from fbprophet import Prophet
@@ -43,4 +44,4 @@ Example usage
   >>> m.fit(df)  # df is a pandas.DataFrame with 'y' and 'ds' columns
   >>> future = m.make_future_dataframe(periods=365)
   >>> m.predict(future)
-
+```
