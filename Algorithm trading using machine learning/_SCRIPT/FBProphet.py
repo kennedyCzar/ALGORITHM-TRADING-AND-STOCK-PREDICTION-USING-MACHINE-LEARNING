@@ -64,6 +64,7 @@ class FBForecaster(object):
         self.forecast = self.model.predict(self.future)
         self.forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
         self.model.plot(self.forecast)
+        plt.title('{}'.format(self.stock))
 
 
 
@@ -74,7 +75,7 @@ dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM', 'GOLD', 'FB']
 for ii in dataframe:
     fb = FBForecaster(ii, 'Close', datetime(2000, 1, 1), datetime.now(), 365)
     fb.forecast()
-    plt.savefig("../FBPROPHET_IMAGES/FBProphetResult_For_{}_2018.png".format(ii))
+    plt.savefig("D:/GIT PROJECT/ALGORITHM-TRADING-AND-STOCK-PREDICTION-USING-MACHINE-LEARNING/Algorithm trading using machine learning/FBPROPHET_IMAGES/FBProphetResult{}_2018.png".format(ii))
 
 
 
