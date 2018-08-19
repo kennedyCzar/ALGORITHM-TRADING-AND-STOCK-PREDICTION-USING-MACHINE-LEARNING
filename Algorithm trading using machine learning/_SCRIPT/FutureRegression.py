@@ -21,10 +21,9 @@ class forecast(object):
         
         import numpy as np
         import pandas as pd
-        import matplotlib.pyplot as plt
         from datetime import datetime
         import pandas_datareader.data as web
-        from datetime import datetime
+        from sklearn.model_selection import KFold
         
         #-----------------------------
         #start_date = datetime(1976, 1, 1)
@@ -109,9 +108,14 @@ class forecast(object):
         #----------------------------------------------------
 
 if __name__ == '__main__':
+    from datetime import datetime
+    import matplotlib.pyplot as plt
+    import time
     #get datalist
+    starttime = time.clock()
     dataframe = ['TSLA', 'IBM', 'AAPL', 'MSFT', 'F', 'GM', 'GOLD', 'FB']
     #end_date = datetime(2018, 7, 16)
     for ii in dataframe:
         forecast(ii, 'Close', datetime(2012, 1, 1), datetime.now(), datetime(2020, 7, 16))
         plt.savefig("../_REGRESSION FUTURE FORECAST/best{}_2018.png".format(ii))
+    print('COmpleted in {} secs'.format(time.clock() - starttime))
