@@ -1,0 +1,12 @@
+Metadata-Version: 1.0
+Name: fbprophet
+Version: 0.3.post2
+Summary: Automatic Forecasting Procedure
+Home-page: https://facebook.github.io/prophet/
+Author: Sean J. Taylor <sjt@fb.com>, Ben Letham <bletham@fb.com>
+Author-email: sjt@fb.com
+License: BSD
+Description: 
+        Implements a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is robust to missing data and shifts in the trend, and typically handles outliers well.
+        
+Platform: UNKNOWN
