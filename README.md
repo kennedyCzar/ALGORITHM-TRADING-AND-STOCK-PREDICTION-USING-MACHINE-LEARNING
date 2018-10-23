@@ -9,12 +9,12 @@ This is Just a Sample work in progress.
 
 |Stratrgy        | Output        |
 |--------------- | --------------|
-|Bollinger band  | In progress   |
-|Moving Averages | In progress   |
-|Regression      | In progress   |
-|SVM             | In progress   |
-|Neural Network  | x             |
-|Convoluted Neural Network | x   |
+|Bollinger band  | Completed     |
+|Moving Averages | Completed     |
+|Regression      | Completed     |
+|SVM             | Completed     |
+|Neural Network  | In Progress   |
+|Convoluted Neural Network | In Progress   |
 
 ```python
 Prediction output for the modules in the script
